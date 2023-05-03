@@ -16,7 +16,7 @@ resource "null_resource" "dummy_ressource" {
   
 # This is an example of Create time provisioner
   provisioner "local-exec" {
-    command = "echo '0' > status.txt"
+    command = "echo '0' \n ressource_id: ${self.id} > status.txt"
   }
 
 # This is an example of Destroy time provisioner
@@ -24,6 +24,7 @@ resource "null_resource" "dummy_ressource" {
     when = destroy
     command = "echo '1' > status.txt"
   }
+
 }
 
 
