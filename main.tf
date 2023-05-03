@@ -12,6 +12,20 @@ resource "aws_instance" "terraform_vm" {
   }
 }
 
+resource "null_resource" "dummy_ressource" {
+  
+# This is an example of Create time provisioner
+  provisioner "local-exec" {
+    command = "echo '0' > status.txt"
+  }
+
+# This is an example of Destroy time provisioner
+  provisioner "local-exec" {
+    when = destroy
+    command = "echo '1' > status.txt"
+  }
+}
+
 
 ################### Some Variables ###########################################
 
