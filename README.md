@@ -22,6 +22,12 @@ terraform apply -input=false tfplan
 ```
 The -input=false flag tells Terraform to skip interactive input prompts and assume the default value for any prompts. The -auto-approve flag tells Terraform to automatically approve the changes without prompting for confirmation.
 
+## Terraform variables
+### Get more verbose logs:
+```
+export TF_LOG=TRACE
+```
+
 ## Configure AWS credentials for the Terraform AWS provider
 
 ### Using Environment variables
