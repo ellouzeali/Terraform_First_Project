@@ -11,10 +11,9 @@ resource "aws_instance" "terraform_vm" {
     Name = "my-first-tf-node"
   }
 }
-output "message" {
-  value = "Creating EC2 instance with terraform!!"
-}
 
+
+################### Some Variables ###########################################
 
 variable "greeting" {
   description = "My Test Basic type Variable"
@@ -48,4 +47,17 @@ variable "docker_ports" {
     protocol = "tcp"
   } ]
   
+}
+
+################### Some Ouputs  ###########################################
+
+output "message" {
+  description = "Test message to show after running terraform apply"
+  value = "Creating EC2 instance with terraform!!"
+}
+
+output "instance_ip" {
+  description = "VM's Public IP"
+  value = aws_instance.terraform_vm.public_ip
+  sensitive = true
 }
