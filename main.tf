@@ -1,7 +1,7 @@
-provider "aws" {
-  region = "us-east-1"
-  profile = "myprofile"
-}
+# provider "aws" {
+#   region = "us-east-1"
+#   profile = "myprofile"
+# }
 
 resource "aws_instance" "terraform_vm" {
   ami = "ami-02396cdd13e9a1257"
