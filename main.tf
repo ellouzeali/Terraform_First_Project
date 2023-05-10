@@ -6,6 +6,8 @@
 module "vpc" {
   source = "./modules/vpc"
   region = var.availability_zone_names[0]
+  my_aws_access_key = var.aws_access_key
+  my_aws_secret_key = var.aws_secret_key
 }
 
 resource "aws_instance" "terraform_vm" {
