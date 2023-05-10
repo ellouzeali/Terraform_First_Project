@@ -3,6 +3,7 @@
 This is Terrafom Tuto Application.
 
 ## Terraform commands
+### Basic commands
 
 ```
 terraform init
@@ -21,6 +22,15 @@ terraform show -json tfplan
 terraform apply -input=false tfplan
 ```
 The -input=false flag tells Terraform to skip interactive input prompts and assume the default value for any prompts. The -auto-approve flag tells Terraform to automatically approve the changes without prompting for confirmation.
+
+### Terraform State commands
+
+```
+terraform state list 
+terraform state show <ressource_name>
+terraform state rm <ressource_name>
+```
+
 
 ## Terraform variables
 ### Get more verbose logs:
