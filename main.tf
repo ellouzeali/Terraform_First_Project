@@ -3,9 +3,14 @@
 #   profile = "myprofile"
 # }
 
+module "vpc" {
+  source = "./modules/vpc"
+  region = var.availability_zone_names[0]
+}
+
 resource "aws_instance" "terraform_vm" {
-  ami = "ami-02396cdd13e9a1257"
-  subnet_id = "subnet-0619e6ccee9197e25"
+  ami           = module.vpc.ami_id
+  subnet_id     = module.vpc.subnet_id
   instance_type = "t2.micro"
   tags = {
     Name = "my-first-tf-node"
@@ -47,7 +52,7 @@ variable "greeting" {
 variable "availability_zone_names" {
   description = "My Test list of strings Variable"
   type = list(string)
-  default = [ "us-west-1a" ]
+  default = [ "us-east-1", "us-west-1a" ]
 }
 
 variable "docker_ports" {
@@ -75,4 +80,9 @@ output "instance_ip" {
   description = "VM's Public IP"
   value = aws_instance.terraform_vm.public_ip
   sensitive = true
+}
+
+output "PrivateIP" {
+  description = "Private IP of EC2 instance"
+  value       = aws_instance.terraform_vm.private_ip
 }
