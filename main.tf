@@ -1,12 +1,21 @@
-module "my_vpc" {
-  source            = "./modules/vpc"
-  region            = var.availability_zone_names[0]
-  my_aws_access_key = var.aws_access_key
-  my_aws_secret_key = var.aws_secret_key
+data "aws_ssm_parameter" "ami_id" {
+  name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+}
+
+
+module "vpc" {
+  source = "terraform-aws-modules/vpc/aws"
+
+  name = "my-vpc"
+  cidr = "10.0.0.0/16"
+
+  azs            = ["us-east-1a"]
+  public_subnets = ["10.0.1.0/24"]
+
 }
 resource "aws_security_group" "my-sg" {
-  vpc_id = module.my_vpc.vpc_id
-  name   = join("_", ["tf", "sg", module.my_vpc.vpc_id])
+  vpc_id = module.vpc.vpc_id
+  name   = join("_", ["tf", "sg", module.vpc.vpc_id])
   dynamic "ingress" {
     for_each = var.rules
     content {
@@ -29,8 +38,8 @@ resource "aws_security_group" "my-sg" {
 }
 
 resource "aws_instance" "terraform_vm" {
-  ami           = module.my_vpc.ami_id
-  subnet_id     = module.my_vpc.subnet_id
+  ami           = data.aws_ssm_parameter.ami_id.value
+  subnet_id     = module.vpc.public_subnets[0]
   instance_type = "t2.micro"
   security_groups = [aws_security_group.my-sg.id]
   associate_public_ip_address = true
