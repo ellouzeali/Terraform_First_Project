@@ -32,6 +32,11 @@ terraform state show <ressource_name>
 terraform state rm <ressource_name>
 ```
 
+### Terraform interactive CLI Command
+
+```
+terraform console
+```
 
 ## Terraform variables
 ### Get more verbose logs:

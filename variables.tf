@@ -13,6 +13,31 @@ variable "availability_zone_names" {
   default     = ["us-east-1", "us-west-1a"]
 }
 
+variable "rules" {
+  type = list(object({
+    port        = number
+    proto       = string
+    cidr_blocks = list(string)
+  }))
+  default = [
+    {
+      port        = 80
+      proto       = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      port        = 22
+      proto       = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      port        = 3689
+      proto       = "tcp"
+      cidr_blocks = ["6.7.8.9/32"]
+    }
+  ]
+}
+
 variable "docker_ports" {
   description = "Test variable with type list of objects"
   type = list(object({

@@ -5,3 +5,7 @@ output "subnet_id" {
 output "ami_id" {
   value = data.aws_ssm_parameter.this.value
 }
+
+output "vpc_id" {
+  value = aws_vpc.this.id
+}
