@@ -24,6 +24,22 @@ terraform apply -input=false tfplan
 ```
 The -input=false flag tells Terraform to skip interactive input prompts and assume the default value for any prompts. The -auto-approve flag tells Terraform to automatically approve the changes without prompting for confirmation.
 
+
+### Terraform Recreate and import ressources
+
+```
+terraform taint <ressource_address>
+terraform import <ressource_address> <unmanaged-resource-id>
+```
+
+You can use "taint" cmd to tell terraform that you want recreate this ressource in the next "apply".
+You can use "import" to import an external ressource by its ID and bind it to a ressource object declared in your terraform configuration files.
+
+Exemple:
+```
+terraform taint aws_instance.terraform_vm
+terraform import aws_instance.webserver2 i-0ccb8fb34380b0ee7
+```
 ### Terraform State commands
 
 ```
@@ -43,7 +59,13 @@ terraform console
 ```
 export TF_LOG=TRACE
 ```
+You can set the following levels: TRACE, DEBUG, INFO, ERROR
+but TRACE is the most verbose level logging and the most reliable one.
 
+To redirect logs and save it in a file, you can use **TF_LOG_PATH** environment variable.
+```
+export TF_LOG_PATH=./terraform.log
+```
 ## Configure AWS credentials for the Terraform AWS provider
 
 ### Using Environment variables
