@@ -9,13 +9,13 @@ module "vpc" {
   name = "my-vpc"
   cidr = "10.0.0.0/16"
 
-  azs            = ["us-east-1a"]
+  azs            = ["us-east-1"]
   public_subnets = ["10.0.1.0/24"]
 
 }
 resource "aws_security_group" "my-sg" {
   vpc_id = module.vpc.vpc_id
-  name   = join("_", ["tf", "sg", module.vpc.vpc_id])
+  name   = join("_", ["tf", "sg", "${terraform.workspace}", module.vpc.vpc_id])
   dynamic "ingress" {
     for_each = var.rules
     content {
@@ -33,7 +33,7 @@ resource "aws_security_group" "my-sg" {
   }
 
   tags = {
-    Name = "Terraform-Dynamic-SG"
+    Name = "Terraform-${terraform.workspace}-Dynamic-SG"
   }
 }
 
@@ -45,7 +45,7 @@ resource "aws_instance" "terraform_vm" {
   associate_public_ip_address = true
   user_data                   = fileexists("script.sh") ? file("script.sh") : null
   tags = {
-    Name = "my-first-tf-node"
+    Name = "tf-${terraform.workspace}-ec2"
   }
 }
 
