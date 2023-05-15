@@ -9,7 +9,7 @@ module "vpc" {
   name = "my-vpc"
   cidr = "10.0.0.0/16"
 
-  azs            = ["us-east-1"]
+  azs            = terraform.workspace == "default" ? ["us-east-1a"] : ["us-west-2a"]
   public_subnets = ["10.0.1.0/24"]
 
 }
