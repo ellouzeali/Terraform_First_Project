@@ -47,7 +47,15 @@ terraform state list
 terraform state show <ressource_name>
 terraform state rm <ressource_name>
 ```
+### Terraform Workspace commands
 
+```
+terraform workspace new <workspace_name>
+terraform workspace list
+terraform workspace select <workspace_name>
+terraform workspace show
+terraform workspace delete <workspace_name>
+```
 ### Terraform interactive CLI Command
 
 ```
