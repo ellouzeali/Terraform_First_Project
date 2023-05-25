@@ -24,20 +24,26 @@ terraform apply -input=false tfplan
 ```
 The -input=false flag tells Terraform to skip interactive input prompts and assume the default value for any prompts. The -auto-approve flag tells Terraform to automatically approve the changes without prompting for confirmation.
 
-
 ### Terraform Recreate and import ressources
+
+Terraform usually only updates your infrastructure if it does not match your configuration. You can use the -replace flag for terraform plan and terraform apply operations to safely recreate resources in your environment even if you have not edited the configuration
+```
+terraform plan -replace="aws_instance.example"
+terraform apply -replace="aws_instance.example"
+```
+
+In older versions of Terraform, you may have used the terraform taint command to achieve a similar outcome. That command has now been deprecated in favor of the -replace flag
+In older versions you can use "taint" cmd to tell terraform that you want recreate this ressource in the next "apply".
 
 ```
 terraform taint <ressource_address>
-terraform import <ressource_address> <unmanaged-resource-id>
-```
-
-You can use "taint" cmd to tell terraform that you want recreate this ressource in the next "apply".
-You can use "import" to import an external ressource by its ID and bind it to a ressource object declared in your terraform configuration files.
-
-Exemple:
-```
 terraform taint aws_instance.terraform_vm
+```
+
+You can use "import" command to import an external ressource by its ID and bind it to a ressource object declared in your terraform configuration files.
+
+```
+terraform import <ressource_address> <unmanaged-resource-id>
 terraform import aws_instance.webserver2 i-0ccb8fb34380b0ee7
 ```
 ### Terraform State commands
@@ -46,7 +52,10 @@ terraform import aws_instance.webserver2 i-0ccb8fb34380b0ee7
 terraform state list 
 terraform state show <ressource_name>
 terraform state rm <ressource_name>
+terraform state mv -state-out=<path-of-destination-state-file> <ressource_name> <ressource_new_name>
 ```
+The **terraform state mv** command moves resources from one state file to another. You can also rename resources with **mv**. The move command will update the resource in state, but not in your configuration file. Moving resources is useful when you want to combine modules or resources from other states, but do not want to destroy and recreate the infrastructure.
+
 ### Terraform Workspace commands
 
 ```
